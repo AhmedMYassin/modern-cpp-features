@@ -301,7 +301,17 @@ int b = square2(2); // mov edi, 2
 ```
 
 `constexpr` values are those that the compiler can evaluate at compile-time:
+
 ```c++
+const int x = 123;
+constexpr const int y = x; // fine
+
+int x = 123;
+constexpr const int y = x; // Error, int x isn’t const expression
+
+const int x = 123;
+constexpr const int y = x; // fine
+
 const int x = 123;
 constexpr const int& y = x; // error -- constexpr variable `y` must be initialized by a constant expression
 ```
