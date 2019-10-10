@@ -659,6 +659,31 @@ auto add(T a, U b) -> decltype(a + b) {
 ```
 In C++14, `decltype(auto)` can be used instead.
 
+Trailing has some more minor advantages:
+
+```c++
+struct long_struct_name
+{
+    typedef std::vector<int> long_vector_name;
+
+    long_vector_name get_integers() const;
+}; 
+
+long_struct_name::long_vector_name long_struct_name::get_integers() const
+{
+    // ...
+}
+```
+
+Instead of the long name definition for the function return, you can use trailing to help.
+
+```c++
+auto long_struct_name::get_integers() const -> long_vector_name
+{
+    // ...
+}
+```
+
 ## C++11 Library Features
 
 ### std::move
