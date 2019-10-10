@@ -570,6 +570,10 @@ int oldVersion {Program::Version1::getVersion()}; // Uses getVersion() from Vers
 bool firstVersion {Program::isFirstVersion()};    // Does not compile when Version2 is added
 ```
 
+does it seem useless?
+
+This feature is useful for software versioning. In the previous example, getVersion() function is called by other developers but in case there is a required modification that isn’t backward compatible, you can use the inline namespace to let all the developers use the same function Program::getVersion() which will be ok for most fo the developers as they don't need to change their code but for those who need the old implementation, they can still access the old function using Program::Version1::getVersion().
+
 ### Non-static data member initializers
 Allows non-static data members to be initialized where they are declared, potentially cleaning up constructors of default initializations.
 
