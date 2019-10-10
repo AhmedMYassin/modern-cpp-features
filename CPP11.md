@@ -807,7 +807,12 @@ auto playerProfile = std::make_tuple(51, "Frans Nielsen", "NYI");
 std::get<0>(playerProfile); // 51
 std::get<1>(playerProfile); // "Frans Nielsen"
 std::get<2>(playerProfile); // "NYI"
+
+// std::get can be used to update the tuple elements 
+std::get<0>(playerProfile) = 20; // (20, "Frans Nielsen", "NYI")
 ```
+
+`std::get` supports `std::tuple`, `std::array`, `std::pair`. In C++17 `std::variant` is supported
 
 ### std::tie
 Creates a tuple of lvalue references. Useful for unpacking `std::pair` and `std::tuple` objects. Use `std::ignore` as a placeholder for ignored values. In C++17, structured bindings should be used instead.
