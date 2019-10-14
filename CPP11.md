@@ -90,6 +90,20 @@ auto&& al = x; // `al` is an lvalue of type `int&` -- binds to the lvalue, `x`
 auto&& ar = 0; // `ar` is an lvalue of type `int&&` -- binds to the rvalue temporary, `0`
 ```
 
+Forward referencing helps the functions to handle rvalue and lvalue at the same time.
+
+
+```c++
+template <typename T>
+void calc(T& x);
+template <typename T>
+void calc(T&& x);
+
+int s = 5;
+calc(s); // calls calc(T&) where (x => int&) .. if calc(T&) isn't existed calc(T&&) will be called where (x => int& && => int&)
+calc(5); // calls calc(T&&) where (x => int&& && -> int&&)
+```
+
 Template type parameter deduction with lvalues and rvalues:
 ```c++
 // Since C++14 or later:
@@ -725,14 +739,30 @@ struct A {
 };
 
 template <typename T>
-A wrapper(T&& arg) {
-  return A{std::forward<T>(arg)};
+A wrapper1(T&& arg) {
+  return A{arg}; // pass both rvalue and lvalue references as lvalue reference
 }
 
-wrapper(A{}); // moved
-A a;
-wrapper(a); // copied
-wrapper(std::move(a)); // moved
+template <typename T>
+A wrapper2(T&& arg) {
+  return A{std::move(arg)}; // pass both rvalue and lvalue references as rvalue reference
+}
+
+template <typename T>
+A wrapper3(T&& arg) {
+  return A{std::forward<T>(arg)}; // pass each reference based on its actual referece type
+}
+
+A a1, a2, a3;
+
+wrapper1(a1); // copied
+wrapper1(A{}); // copied
+
+wrapper2(a2); // moved
+wrapper2(A{}); // moved
+
+wrapper3(a3); // copied
+wrapper3(A{}); // moved
 ```
 
 See also: [`forwarding references`](#forwarding-references), [`rvalue references`](#rvalue-references).
